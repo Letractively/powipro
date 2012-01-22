@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="noindex, nofollow" />
+	<link href="http://static.loopia.se/css/style-parking.css" rel="stylesheet" type="text/css" />
+	<title>Detta konto är tillfälligt avstängt</title>
+</head>
+<body>
+	<div id="wrapper" style="width: 600px;">
+		<div class="center">
+			<img src="http://static.loopia.se/inline/stopskylt.png" alt="Stop" /></div>
+		<div id="tinted-top" style="margin-left: 25px;"></div>
+		<div id="tinted-middle" style="margin-left: 25px;">
+			<h1>Kontot avstängt.</h1>
+			<p>Detta konto är tillfälligt avstängt. Till ägaren av detta konto: Vänligen kontakta Loopia för mer information. Du finner våra kontaktuppgifter här nedanför.</p>
+			<p>Kontakta oss via webben.</p>
+			<ul>
+				<li><a class="blink" href="https://www.loopia.se/support/">www.loopia.se/support/</a></li>
+			</ul>
+			<div class="hl">&nbsp;</div>
+			<h2>Funderingar.</h2>
+			<p>Tveka inte att ta kontakt med vår kundservice på nedanstående telefonnummer eller e-postadress om du har	några frågor eller funderingar rörande vår hemsida och / eller våra tjänster.</p>
+		</div>
+		<div id="tinted-bottom" style="margin-left: 25px;"></div>
+		<div id="info">
+			<a href="/"><img src="http://static.loopia.se/inline/loopia.png" alt="Loopia AB" /></a><br />
+			En del av <a class="blink" href="http://www.visma.se/">Vismakoncernen</a> &nbsp; &middot; &nbsp;
+			Tel: 021-12 82 22 &nbsp; &middot; &nbsp; Fax: 021-12 82 33 &nbsp; &middot; &nbsp; E-post: <a class="blink" href="mailto:info@loopia.se">info@loopia.se</a>		</div>
+	</div>
+</body>
+</html>
