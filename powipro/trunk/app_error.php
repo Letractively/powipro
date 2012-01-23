@@ -1,5 +1,4 @@
 <?php
-/*
 
 class AppError extends ErrorHandler {
 
@@ -28,6 +27,6 @@ class AppError extends ErrorHandler {
 		echo $this->controller->output;
 	}
 
-}*/
+}
 
 ?>
