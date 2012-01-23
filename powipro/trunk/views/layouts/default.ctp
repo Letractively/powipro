@@ -60,6 +60,10 @@
 			<?php echo $this->Session->flash(); ?>
 			</div>
 			<?php echo $content_for_layout; ?>
+			<br/>
+			<p><small>
+			<?php echo $this->Html->link('Hilfe, ich kenne mich nicht aus!', array('controller' => 'pages', 'action' => 'help')); ?>
+			</small></p>
 		</div>
 		<div id="footer">
 			<?php echo $this->Session->flash('auth'); ?>

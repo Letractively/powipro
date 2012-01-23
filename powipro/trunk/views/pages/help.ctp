@@ -19,7 +19,7 @@ einem <i>call-for-proposals</i> folgen und ein Proposal einreichen wollen.</p>
 <p>Das Prozedere, um Proposals einzureichen ist grunds&auml;tzlich viergegliedert und
 soll f&uuml;r Sie so einfach wie m&ouml;glich sein.</p>
 <ol>
-<li>Zuerst m&uuml;ssen Sie sich <?php echo $this->Html->link('registrieren', array('controller' => 'users', 'action' => register)); ?>.
+<li>Zuerst m&uuml;ssen Sie sich <?php echo $this->Html->link('registrieren', array('controller' => 'users', 'action' => 'register')); ?>.
 Dies m&uuml;ssen Sie nur einmal tun, egal wie viele Proposals Sie erstellen wollen! Ihr Account bleibt auch &uuml;ber den aktuellen Call hinaus aktiv.</li>
 <li>Wenn Sie registriert sind, m&uuml;ssen Sie <a href="#bewerben">Bewerbungsunterlagen erstellen</a>.
 Diese beinhalten grunds&auml;tzliche Daten zu Ihrer Person. Auch diese Bewerbungsunterlagen m&uuml;ssen

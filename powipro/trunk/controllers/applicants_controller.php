@@ -97,12 +97,49 @@ class ApplicantsController extends AppController {
 		array('Applicant.id' => $applicant_id)));
 		
 		$this->loadModel('Proposal');
-		$proposals = $this->paginate('Proposal', array('Proposal.applicant_id' => $applicant_id));
+		$proposals = $this->paginate('Proposal', array('Proposal.applicant_id' => $applicant_id,
+			'Proposal.filed_for <>' => null));
 		
 		$this->set('proposals', $proposals);
 		$this->set('editable', $this->Access->check($this->Applicant, $applicant_id, array('mode' => 'update')));
 		$this->set('applicant', Sanitize::clean($applicant, array('escape' => false)));
 		$this->set('detail', $this->Auth->user('group_id') == $this->groups['Administrators']);
+		
+		$this->visited();
+	}
+	
+	/* access controlled via controllers/Applicants/proposals */
+	public function proposals ($applicant_id = null) {
+		if (!isset($applicant_id)) {
+			$this->revisit('/users/home');
+		}
+		
+		$this->Access->check($this->Applicant, $applicant_id, array('mode' => 'read',
+					'flash' => 'Sie haben nicht die nötige Berechtigung für diese Aktion',
+					'redirect' => '/users/home'));
+		
+		$this->Applicant->Behaviors->attach('Containable');
+		$this->Applicant->contain();
+		$applicant = $this->Applicant->find('first', array('conditions' =>
+			array('Applicant.id' => $applicant_id)));
+
+		$this->loadModel('Proposal');
+		$proposals = $this->paginate('Proposal', array(
+			'Proposal.applicant_id' => $applicant_id));
+					
+		$permissions = array();
+		foreach ($proposals as $proposal) {
+			$permissions[$proposal['Proposal']['id']] =
+			$this->Access->read($this->Proposal, $proposal['Proposal']['id']);
+		}
+
+		$this->loadModel('Semester');
+		$semesters = $this->Semester->getOpenSemesters();
+		
+		$this->set('semesters', $semesters);
+		$this->set('permissions', $permissions);
+		$this->set('proposals', Sanitize::clean($proposals));
+		$this->set('applicant', Sanitize::clean($applicant));
 		
 		$this->visited();
 	}

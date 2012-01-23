@@ -14,10 +14,15 @@ class UsersController extends AppController {
 			'order' => 'User.email',
 		),
 		'Proposal' => array(
-			'contain' => array('Applicant'),
-			'limit' => 25,
+			'contain' => array('Applicant', 'FiledSemester', 'Section', 'CourseType'),
+			'limit' => 8,
 			'order' => 'Proposal.id',
 		),
+		'Applicant' => array(
+			'contain' => array(),
+			'limit' => 5,
+			'order' => 'Applicant.id',
+		)
 	);
 	
 	function login () {
@@ -250,12 +255,93 @@ class UsersController extends AppController {
 	}
 
 	function home () {
-		$this->User->id = $this->Session->read('Auth.User.id');
-		$this->User->find();
+		$user_id = $this->Session->read('Auth.User.id');
+		$this->User->id = $user_id;
+		$this->visited();
+		//$this->User->find();
 	
-		$this->set('username', Sanitize::clean($this->User->field('name'))
-		 . ' ' . Sanitize::clean($this->User->field('last_name')));
+		/*$this->set('username', Sanitize::clean($this->User->field('name'))
+		 . ' ' . Sanitize::clean($this->User->field('last_name')));*/
+		$this->set('user', Sanitize::clean(
+			$this->User->find('first',
+				array('conditions' => array('User.id' => $this->User->id)))
+		));
 
+		$applicants_count = $this->User->Applicant->find('count',
+		array('conditions' => array('Applicant.user_id' => $user_id)));
+
+		if ($applicants_count == 0) {
+			$this->render('home_first_applicant');
+				
+		} else {
+			$this->loadModel('Coapplicant');
+			$this->Coapplicant->contain(array('Applicant', 'Proposal'));
+			
+			$coapplicants = $this->Coapplicant->find('all',
+				array('conditions' => array('Applicant.user_id' => $user_id))
+			);
+			
+			$this->set('coapplicants', Sanitize::clean($coapplicants));
+			
+			if ($applicants_count == 1) {
+				$applicant = $this->User->Applicant->find('first',
+				array('conditions' => array('Applicant.user_id' => $user_id)));
+					
+				$this->set('applicant', Sanitize::clean($applicant));
+					
+				$proposals = $this->paginate('Proposal', array(
+					'Proposal.applicant_id' => $applicant['Applicant']['id']));
+								
+				if (count($proposals) == 0) {
+					$this->render('home_first_proposal');
+
+				} else {
+					
+					$this->loadModel('Semester');
+					$semesters = $this->Semester->getOpenSemesters();
+					$this->set('semesters', $semesters);
+					
+					if (count($proposals) == 1) {
+
+						$permissions = $this->Access->read($this->Proposal, $proposals[0]['Proposal']['id']);
+							
+						$this->set('permissions', $permissions);
+						$this->set('proposal', Sanitize::clean($proposals[0]));
+						$this->render('home_one_proposal');
+							
+					} else {
+						$permissions = array();
+						foreach ($proposals as $proposal) {
+							$permissions[$proposal['Proposal']['id']] =
+							$this->Access->read($this->Proposal, $proposal['Proposal']['id']);
+						}
+							
+						$this->set('permissions', $permissions);
+						$this->set('proposals', Sanitize::clean($proposals));
+						$this->render('home_more_proposals');
+					}
+				}	
+			} else {
+					
+				$this->loadModel('Applicant');
+				$this->Applicant->Behaviors->attach('Containable');
+				$this->Applicant->contain();
+				$applicants = $this->paginate('Applicant', array('Applicant.user_id' => $user_id));
+				
+				$proposals = array();
+				foreach ($applicants as $applicant) {
+					$proposals[$applicant['Applicant']['id']] =
+						$this->Proposal->find('count', 
+						array('conditions' => array(
+							'Proposal.applicant_id' => $applicant['Applicant']['id'])));
+				}
+				
+				$this->set('proposals', $proposals);
+				$this->set('applicants', Sanitize::clean($applicants));
+				$this->render('home_more_applicants');
+			}
+		} 
+		/*
 		$data = $this->User->Applicant->find('all', array(
 			'conditions' => array('user_id' => $this->User->id)
 		));
@@ -300,8 +386,7 @@ class UsersController extends AppController {
 		$this->set('applicants', Sanitize::clean($applicants, array('escape' => false)));
 		$this->set('coapplicants', Sanitize::clean($coapplicants, array('escape' => false)));
 		$this->set('proposals', Sanitize::clean($proposals, array('escape' => false)));
-		$this->set('proposals_count', $proposals_count);
-		$this->visited();
+		$this->set('proposals_count', $proposals_count);*/
 	}
 	
 	/* only admins, access controlled via controllers/User/overview all */

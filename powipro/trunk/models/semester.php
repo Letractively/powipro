@@ -48,7 +48,7 @@ class Semester extends AppModel {
 	public function parentNode () {
 		return 'Semesters';
 	}
-
+	
 	function getAvailableSemesters ($section_id, $course_type_id) {
 		return $this->Contingent->find('all',
 			      array('conditions' => array('Contingent.section_id' => $section_id,
@@ -130,7 +130,7 @@ class Semester extends AppModel {
 		if ($this->isPublished()) return 'published';
 		else return 'new';
 	}
-/*
+
 	function getOpenSemesters () {
 		$result = $this->find('all', array(
 			'conditions' => array('Semester.deadline >= CURRENT_DATE()'.
@@ -140,6 +140,8 @@ class Semester extends AppModel {
 		));
 		return $result;
 	}
+	
+	/*
 
 	function getLateSemesters () {
 		$result = $this->find('all', array(
