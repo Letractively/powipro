@@ -24,8 +24,8 @@ Habilitationsort: <?php echo $applicant['Applicant']['habilitation_place']; ?><b
 </p>
 
 <h3>Eingereichte Proposals</h3>
+<?php if (count($proposals) > 0) { ?>
 <p>Insgesamt <?php echo $this->Paginator->counter(array('format' => '%count%')); ?> Proposal(s)</p>
-
 <center><div class="paging"><?php
  echo $this->Paginator->prev('<< Zurück ', null, null, array('class' => 'disabled')) . '&nbsp;'
 	 . $this->Paginator->numbers() . '&nbsp;'
@@ -71,8 +71,7 @@ echo $this->Paginator->prev('<< Zurück ', null, null, array('class' => 'disable
 <p>Sie befinden sich auf
 <?php echo $this->Paginator->counter(array('format' => 'Seite %page% von %pages%')); ?>
 </p></center>
-
-<?php if ($counter == 0) echo 'Keine'; ?>
+<?php } else echo 'Keine'; ?>
 
 <h3>Akademische Daten</h3>
 <h4>Publikationen</h4>
